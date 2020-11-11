@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
 public class LCADAG {
     //Creating array list
@@ -104,5 +105,82 @@ public class LCADAG {
 	{
 		DFS search = new DFS(this, a);
 		return search.visited(b);
+	}
+	//lowestCommonAncestor code
+	public ArrayList<Integer> lowestCommonAncestor(int x, int y)
+	{
+		ArrayList<Integer> lca = new ArrayList<Integer>();
+		int MaxDist = Integer.MAX_VALUE;
+
+		//check for invalid input
+		if(x==y || x >= this.x || y >= this.x || x < 0 || y < 0) { return lca; } 
+			
+			DFS search = new DFS(this, x);
+			search.reverseDfs(this, x);
+			int xDist;
+			int yDist;
+			
+			for(int a = 0; a < this.x; a++)
+			{
+			
+				if(search.revVisited(a) && hasPath(a, y))
+				{
+					xDist = getDistance(a, x);
+					yDist = getDistance(a, y);
+					
+					if(Integer.max(xDist, yDist) < MaxDist)
+					{		
+						lca = new ArrayList<Integer>();
+						lca.add(a);
+						MaxDist = Integer.max(xDist, yDist);
+					}
+					else if(Integer.max(xDist, yDist) == MaxDist)
+					{
+						lca.add(a);
+						MaxDist = Integer.max(xDist, yDist);
+					}
+				}
+			}
+			return lca;
+		}
+	
+		private int getDistance(int x, int target)
+		{
+		    
+			if( x == target) 
+			{ 
+				return 0; 
+			}
+			else 
+			{
+		        Queue<Integer> q = new LinkedList<Integer>();
+		        int[] distTo = new int[this.x];
+		        boolean[] marked = new boolean[this.x];
+		        for (int a = 0; a < this.x; a++)
+		        { 
+		        	distTo[a] = Integer.MAX_VALUE;
+	        	}
+		        
+		        distTo[x] = 0;
+		        marked[x] = true;
+		        q.add(x);
+		
+		        while (!q.isEmpty())
+		        {
+		            int b = q.remove();
+		            for (int y : this.list1(b)) 
+		            {
+		                if (!marked[y]) {
+		                	
+		                	distTo[y] = distTo[b] + 1;
+		                    marked[y] = true;
+		                    
+		                    q.add(y);
+		                }
+	            	}
+		        }
+		        
+		        return distTo[target];
+			}
 	}
 }
