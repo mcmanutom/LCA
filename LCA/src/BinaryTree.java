@@ -1,9 +1,13 @@
- 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BinaryTree 
 	{ 
 	    //Root of the Binary Tree 
 	    Node root; 
-	  
+	    //Creating array list
+		private List<Integer> list1 = new ArrayList<>();
+		private List<Integer> list2 = new ArrayList<>();
 	    Node findLCA(int n1, int n2) 
 	    { 
 	        return findLCA(root, n1, n2); 
