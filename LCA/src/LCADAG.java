@@ -57,10 +57,52 @@ public class LCADAG {
 		return list2[y];
 	}
 	
+	// Class to create a depth first search object on the graph
+	private class DFS
+	{
+		private boolean[] list1Marked;
+		private boolean[] list2Marked;
+		
+		public DFS(LCADAG a, int b)
+		{
+			list1Marked = new boolean[a.vertexes()];
+			list2Marked = new boolean[a.vertexes()];
+			dfs(a, b);
+		}
+		
+		private void dfs(LCADAG a, int b)
+		{
+			list1Marked[b] = true;
+			for (int y : a.list1(b))
+			if (!list1Marked[y])
+				{
+					dfs(a, y);
+				}
+		}
+		
+
+		private void reverseDfs(LCADAG a, int b)
+		{
+			list2Marked[b] = true;
+			for (int y : a.reverseAdj(b))
+			if (!list2Marked[y]) reverseDfs(a, y);
+		}
+		
+		public boolean visited(int v)
+		{ 
+			return list1Marked[v]; 
+		}
+		
+		public boolean revVisited(int v)
+		{ 
+			return list2Marked[v]; 
+		}
+	}
 
 	//Checks if a path exists between two nodes 
 	public boolean hasPath(int a, int b)
 	{
-		
+		DFS search = new DFS(this, a);
+		return search.visited(b);
 	}
 }
